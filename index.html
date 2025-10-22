@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOS Logo - Turtle Graphics</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>DOS Logo - Turtle Graphics</h1>
+            <p>Enter Logo commands to control the turtle and create graphics</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="canvas-container">
+                <canvas id="canvas" width="600" height="400"></canvas>
+                <div class="turtle" id="turtle"></div>
+            </div>
+            
+            <div class="controls">
+                <div class="command-section">
+                    <h3>Command Input</h3>
+                    <textarea id="commandInput" placeholder="Enter Logo commands here...
+Examples:
+FORWARD 100
+RIGHT 90
+REPEAT 4 [FORWARD 100 RIGHT 90]
+PENUP
+PENDOWN
+HOME
+CLEARSCREEN"></textarea>
+                    <div class="button-group">
+                        <button id="runButton">Run Commands</button>
+                        <button id="clearButton">Clear Screen</button>
+                        <button id="homeButton">Home</button>
+                    </div>
+                </div>
+                
+                <div class="download-section">
+                    <h3>Download Graphics</h3>
+                    <div class="button-group">
+                        <button id="downloadPNG">Download PNG</button>
+                        <button id="downloadSVG">Download SVG</button>
+                    </div>
+                </div>
+                
+                <div class="help-section">
+                    <h3>Commands</h3>
+                    <div class="command-help">
+                        <p><strong>Movement:</strong></p>
+                        <ul>
+                            <li>FORWARD n (or FD n) - Move forward n pixels</li>
+                            <li>BACK n (or BK n) - Move backward n pixels</li>
+                            <li>RIGHT n (or RT n) - Turn right n degrees</li>
+                            <li>LEFT n (or LT n) - Turn left n degrees</li>
+                        </ul>
+                        
+                        <p><strong>Pen Control:</strong></p>
+                        <ul>
+                            <li>PENUP (or PU) - Lift pen (don't draw)</li>
+                            <li>PENDOWN (or PD) - Put pen down (draw)</li>
+                            <li>SETPENCOLOR n - Set pen color (0-15)</li>
+                        </ul>
+                        
+                        <p><strong>Screen:</strong></p>
+                        <ul>
+                            <li>HOME - Return to center</li>
+                            <li>CLEARSCREEN (or CS) - Clear screen</li>
+                            <li>HIDETURTLE (or HT) - Hide turtle</li>
+                            <li>SHOWTURTLE (or ST) - Show turtle</li>
+                        </ul>
+                        
+                        <p><strong>Control:</strong></p>
+                        <ul>
+                            <li>REPEAT n [commands] - Repeat commands n times</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="output">
+            <h3>Output</h3>
+            <div id="output"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
