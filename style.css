@@ -1,0 +1,772 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background-color: #000080;
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background-color: #c0c0c0;
+    color: #000000;
+    padding: 8px 16px;
+    border-bottom: 2px solid #808080;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+}
+
+.controls button {
+    background-color: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    color: #000000;
+    padding: 4px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.controls button:hover {
+    background-color: #e0e0e0;
+}
+
+.controls button:active {
+    border: 2px inset #c0c0c0;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    background-color: #008080;
+}
+
+.canvas-container {
+    flex: 1;
+    position: relative;
+    background-color: #ffffff;
+    margin: 8px;
+    border: 2px inset #c0c0c0;
+    overflow: auto;
+}
+
+#canvas {
+    display: block;
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.turtle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transform-origin: center;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.turtle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><polygon points="8,2 14,14 2,14" fill="none" stroke="black" stroke-width="1.5"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.command-panel {
+    width: 300px;
+    background-color: #c0c0c0;
+    color: #000000;
+    border-left: 2px solid #808080;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.command-input {
+    padding: 8px;
+    border-bottom: 1px solid #808080;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    flex-shrink: 0;
+    /* Prevent shrinking */
+}
+
+.prompt {
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+#commandInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    background: transparent;
+}
+
+.output {
+    flex: 1;
+    padding: 8px;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 1.4;
+    background-color: #ffffff;
+    border-bottom: 1px solid #808080;
+    min-height: 0;
+    /* Allow flex item to shrink */
+    max-height: calc(100vh - 400px);
+    /* Ensure space for other sections */
+}
+
+.welcome-text {
+    color: #000080;
+    font-weight: bold;
+}
+
+.command-line {
+    margin: 2px 0;
+}
+
+.command-line.input {
+    color: #000080;
+    font-weight: bold;
+}
+
+.command-line.output {
+    color: #008000;
+}
+
+.command-line.error {
+    color: #800000;
+}
+
+.examples-section {
+    padding: 8px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #808080;
+    flex-shrink: 0;
+    /* Prevent shrinking */
+}
+
+.examples-section h3 {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000080;
+}
+
+.example-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+}
+
+.example-btn {
+    background-color: #c0c0c0;
+    border: 1px outset #c0c0c0;
+    color: #000000;
+    padding: 4px 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.example-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.example-btn:active {
+    border: 1px inset #c0c0c0;
+}
+
+.turtle-info {
+    padding: 8px;
+    font-size: 12px;
+    background-color: #e0e0e0;
+    border-top: 1px solid #808080;
+    flex-shrink: 0;
+    /* Prevent shrinking */
+}
+
+.turtle-info div {
+    margin: 2px 0;
+}
+
+.mouse-info {
+    padding: 8px;
+    font-size: 12px;
+    background-color: #d0d0d0;
+    border-top: 1px solid #808080;
+    flex-shrink: 0;
+    /* Prevent shrinking */
+}
+
+.mouse-info div {
+    margin: 2px 0;
+    color: #000080;
+}
+
+/* Scrollbar styling for DOS look */
+.output::-webkit-scrollbar {
+    width: 16px;
+}
+
+.output::-webkit-scrollbar-track {
+    background-color: #c0c0c0;
+}
+
+.output::-webkit-scrollbar-thumb {
+    background-color: #808080;
+    border: 1px solid #404040;
+}
+
+.output::-webkit-scrollbar-button {
+    background-color: #c0c0c0;
+    border: 1px outset #c0c0c0;
+    height: 16px;
+}
+
+.output::-webkit-scrollbar-button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Canvas container scrollbar styling */
+.canvas-container::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+.canvas-container::-webkit-scrollbar-track {
+    background-color: #c0c0c0;
+}
+
+.canvas-container::-webkit-scrollbar-thumb {
+    background-color: #808080;
+    border: 1px solid #404040;
+}
+
+.canvas-container::-webkit-scrollbar-button {
+    background-color: #c0c0c0;
+    border: 1px outset #c0c0c0;
+    height: 16px;
+    width: 16px;
+}
+
+.canvas-container::-webkit-scrollbar-button:hover {
+    background-color: #e0e0e0;
+}
+
+.canvas-container::-webkit-scrollbar-corner {
+    background-color: #c0c0c0;
+}
+
+/* Accessibility improvements */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #000080;
+    color: #ffffff;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 0 0 4px 4px;
+    z-index: 1001;
+    font-family: 'Courier New', monospace;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Enhanced header styling */
+.header h1 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Improved command panel styling */
+.command-input label.prompt {
+    font-weight: bold;
+    margin-right: 4px;
+    display: inline-block;
+}
+
+.welcome-text h2 {
+    color: #000080;
+    font-size: 14px;
+    margin: 0 0 8px 0;
+    font-weight: bold;
+}
+
+.welcome-text p {
+    margin: 8px 0;
+    line-height: 1.4;
+}
+
+.welcome-text ul {
+    margin: 8px 0 8px 20px;
+    list-style-type: disc;
+}
+
+.welcome-text li {
+    margin: 4px 0;
+    line-height: 1.3;
+}
+
+.welcome-text strong {
+    color: #000080;
+    font-weight: bold;
+}
+
+/* Examples section improvements */
+.examples-section p {
+    margin: 4px 0 8px 0;
+    font-size: 11px;
+    color: #000080;
+}
+
+/* Turtle and mouse info sections */
+.turtle-info h4,
+.mouse-info h4 {
+    font-size: 11px;
+    font-weight: bold;
+    color: #000080;
+    margin: 0 0 4px 0;
+    border-bottom: 1px solid #808080;
+    padding-bottom: 2px;
+}
+
+/* Footer styling */
+.site-footer {
+    background-color: #c0c0c0;
+    color: #000000;
+    border-top: 2px solid #808080;
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section h3 {
+    color: #000080;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    border-bottom: 1px solid #808080;
+    padding-bottom: 2px;
+}
+
+.footer-section p {
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+.footer-section ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-section li {
+    margin: 4px 0;
+}
+
+.footer-section a {
+    color: #000080;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+    color: #800000;
+}
+
+.footer-bottom {
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid #808080;
+    text-align: center;
+    font-size: 10px;
+    color: #666666;
+}
+
+.footer-bottom p {
+    margin: 2px 0;
+}
+
+/* Modal accessibility improvements */
+.modal[aria-hidden="true"] {
+    display: none;
+}
+
+.modal[aria-hidden="false"] {
+    display: block;
+}
+
+.modal-header button.close {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+}
+
+.modal-header button.close:hover,
+.modal-header button.close:focus {
+    color: #ffff00;
+    outline: 2px solid #ffff00;
+}
+
+/* Focus indicators for better accessibility */
+button:focus,
+input:focus,
+.example-btn:focus {
+    outline: 2px solid #000080;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .welcome-text {
+        background-color: #ffffff;
+        border: 2px solid #000000;
+        padding: 8px;
+    }
+
+    .turtle-info,
+    .mouse-info {
+        background-color: #ffffff;
+        border: 1px solid #000000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .turtle {
+        transition: none;
+    }
+
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Enhanced scrolling for command panel */
+.command-panel {
+    overflow: hidden;
+    /* Prevent panel itself from scrolling */
+}
+
+/* Ensure output section scrolls properly */
+.output {
+    scrollbar-width: thin;
+    scrollbar-color: #808080 #c0c0c0;
+}
+
+/* Custom scrollbar for better visibility */
+.output::-webkit-scrollbar {
+    width: 12px;
+}
+
+.output::-webkit-scrollbar-track {
+    background-color: #c0c0c0;
+    border: 1px inset #c0c0c0;
+}
+
+.output::-webkit-scrollbar-thumb {
+    background-color: #808080;
+    border: 1px outset #808080;
+}
+
+.output::-webkit-scrollbar-thumb:hover {
+    background-color: #606060;
+}
+
+.output::-webkit-scrollbar-button {
+    background-color: #c0c0c0;
+    border: 1px outset #c0c0c0;
+    height: 12px;
+}
+
+.output::-webkit-scrollbar-button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-height: 600px) {
+    .output {
+        max-height: calc(100vh - 350px);
+    }
+}
+
+@media (max-height: 500px) {
+    .output {
+        max-height: calc(100vh - 300px);
+    }
+
+    .examples-section {
+        padding: 6px;
+    }
+
+    .turtle-info,
+    .mouse-info {
+        padding: 6px;
+        font-size: 11px;
+    }
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background-color: #c0c0c0;
+    margin: 2% auto;
+    border: 2px solid #808080;
+    width: 90%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    background-color: #000080;
+    color: #ffffff;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #808080;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 16px;
+    font-family: 'Courier New', monospace;
+}
+
+.close {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close:hover {
+    color: #ffff00;
+}
+
+.modal-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.modal-body h3 {
+    color: #000080;
+    font-size: 14px;
+    margin: 16px 0 8px 0;
+    text-decoration: underline;
+}
+
+.modal-body h4 {
+    color: #800000;
+    font-size: 13px;
+    margin: 12px 0 6px 0;
+}
+
+.modal-body p {
+    margin: 8px 0;
+    text-align: justify;
+}
+
+.modal-body ul {
+    margin: 8px 0 8px 20px;
+}
+
+.modal-body li {
+    margin: 4px 0;
+}
+
+.modal-body code {
+    background-color: #f0f0f0;
+    padding: 2px 4px;
+    font-family: 'Courier New', monospace;
+    color: #000080;
+}
+
+.modal-body pre {
+    background-color: #f0f0f0;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #808080;
+    overflow-x: auto;
+}
+
+/* Modal scrollbar styling */
+.modal-body::-webkit-scrollbar {
+    width: 16px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background-color: #c0c0c0;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #808080;
+    border: 1px solid #404040;
+}
+
+.modal-body::-webkit-scrollbar-button {
+    background-color: #c0c0c0;
+    border: 1px outset #c0c0c0;
+    height: 16px;
+}
+/*
+ AdSense Integration Styling */
+.ad-container {
+    background-color: #f8f8f8;
+    border: 1px solid #d0d0d0;
+    margin: 16px 8px;
+    padding: 8px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+}
+
+.sidebar-ad {
+    background-color: #f0f0f0;
+    border: 1px solid #c0c0c0;
+    margin: 8px 0;
+    padding: 6px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    flex-shrink: 0;
+}
+
+.ad-label {
+    font-size: 10px;
+    color: #666666;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Ensure ads don't break layout */
+.adsbygoogle {
+    display: block !important;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Responsive ad adjustments */
+@media (max-width: 768px) {
+    .ad-container {
+        margin: 8px 4px;
+        padding: 6px;
+    }
+    
+    .sidebar-ad {
+        margin: 6px 0;
+        padding: 4px;
+    }
+    
+    .ad-label {
+        font-size: 9px;
+    }
+}
+
+/* Ensure ads don't interfere with educational content */
+.ad-container,
+.sidebar-ad {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* High contrast mode adjustments for ads */
+@media (prefers-contrast: high) {
+    .ad-container,
+    .sidebar-ad {
+        border: 2px solid #000000;
+        background-color: #ffffff;
+    }
+    
+    .ad-label {
+        color: #000000;
+    }
+}
+
+/* Ad-friendly layout adjustments */
+.command-panel {
+    min-height: 0;
+}
+
+.sidebar-ad ins {
+    min-height: 100px;
+    display: block;
+}
+
+.ad-container ins {
+    min-height: 90px;
+    display: block;
+}
