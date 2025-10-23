@@ -3,7 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="LOGO Turtle">
+    <meta name="theme-color" content="#000080">
+    <meta name="msapplication-TileColor" content="#000080">
 
     <!-- Primary Meta Tags -->
     <title>LOGO Turtle Graphics - Interactive Programming Environment | HK Sapientia</title>
@@ -245,19 +251,20 @@
                                 aria-label="Draw a rectangle with different side lengths">Rectangle</button>
                         <button class="example-btn" data-command="REPEAT 360 [FD 3 RT 1]"
                                 aria-label="Draw a circle using small forward steps and turns">Circle</button>
-                        <button class="example-btn" data-command="REPEAT 3 [FD 300 RT 120]"
+                        <button class="example-btn hidden-mobile" data-command="REPEAT 3 [FD 300 RT 120]"
                                 aria-label="Draw a triangle with three equal sides">Triangle</button>
-                        <button class="example-btn" data-command="REPEAT 5 [FD 200 RT 72]"
+                        <button class="example-btn hidden-mobile" data-command="REPEAT 5 [FD 200 RT 72]"
                                 aria-label="Draw a pentagon with five equal sides">Pentagon</button>
-                        <button class="example-btn" data-command="REPEAT 6 [FD 200 RT 60]"
+                        <button class="example-btn hidden-mobile" data-command="REPEAT 6 [FD 200 RT 60]"
                                 aria-label="Draw a hexagon with six equal sides">Hexagon</button>
-                        <button class="example-btn" data-command="REPEAT 8 [FD 150 RT 45]"
+                        <button class="example-btn hidden-mobile" data-command="REPEAT 8 [FD 150 RT 45]"
                                 aria-label="Draw an octagon with eight equal sides">Octagon</button>
-                        <button class="example-btn" data-command="REPEAT 9 [FD 150 RT 40]"
+                        <button class="example-btn hidden-mobile" data-command="REPEAT 9 [FD 150 RT 40]"
                                 aria-label="Draw a nonagon with nine equal sides">Nonagon</button>
-                        <button class="example-btn" data-command="REPEAT 10 [FD 100 RT 36]"
+                        <button class="example-btn hidden-mobile" data-command="REPEAT 10 [FD 100 RT 36]"
                                 aria-label="Draw a decagon with ten equal sides">Decagon</button>
                     </div>
+                    <button class="show-more-btn" id="showMoreBtn" style="display: none;">Show More Examples</button>
                 </section>
 
                 <section class="turtle-info" aria-label="Turtle status information">
@@ -283,6 +290,7 @@
                          data-ad-format="auto"
                          data-full-width-responsive="true"></ins>
                 </section>
+
             </aside>
         </main>
     </div>
@@ -298,18 +306,6 @@
                 <!-- Guide content will be loaded here -->
             </div>
         </div>
-    </div>
-
-    <!-- Educational Ad Space - Above Footer -->
-    <div class="ad-container" role="complementary" aria-label="Educational resources advertisement">
-        <div class="ad-label">Educational Resources</div>
-        <!-- AdSense Ad Unit - Horizontal Banner -->
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-8555499225091739"
-             data-ad-slot="1234567890"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
     </div>
 
     <!-- Footer with additional SEO content -->
@@ -348,7 +344,6 @@
     
     <!-- Initialize AdSense -->
     <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
 </body>

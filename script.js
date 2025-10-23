@@ -6,9 +6,12 @@ class LogoInterpreter {
         this.commandInput = document.getElementById('commandInput');
         this.output = document.getElementById('output');
         
+        // Initialize canvas size based on device
+        this.initializeCanvasSize();
+        
         // Turtle state
-        this.x = 600; // Center of 1200px canvas
-        this.y = 450; // Center of 900px canvas
+        this.x = this.canvas.width / 2; // Center of canvas
+        this.y = this.canvas.height / 2; // Center of canvas
         this.heading = 0; // Degrees, 0 = up
         this.penDown = true;
         this.penColor = '#000000';
@@ -82,6 +85,15 @@ class LogoInterpreter {
             this.showGuide();
         });
         
+        // Show more examples button for mobile
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', () => {
+                const examplesSection = document.querySelector('.examples-section');
+                examplesSection.classList.add('examples-expanded');
+            });
+        }
+        
         // Add event listeners for example buttons
         document.querySelectorAll('.example-btn').forEach(button => {
             button.addEventListener('click', () => {
@@ -103,6 +115,9 @@ class LogoInterpreter {
         
         // Add mouse tracking for canvas
         this.setupMouseTracking();
+        
+        // Add touch support for mobile
+        this.setupTouchSupport();
     }
     
     setupMouseTracking() {
@@ -123,6 +138,117 @@ class LogoInterpreter {
             mouseCoords.textContent = '--, --';
             mouseCoords.style.color = '#808080';
         });
+    }
+    
+    setupTouchSupport() {
+        const mouseCoords = document.getElementById('mouseCoords');
+        
+        // Touch tracking for canvas
+        this.canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const rect = this.canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = Math.round(touch.clientX - rect.left);
+            const y = Math.round(touch.clientY - rect.top);
+            mouseCoords.textContent = `${x}, ${y}`;
+            mouseCoords.style.color = '#000080';
+        });
+        
+        this.canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const rect = this.canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const x = Math.round(touch.clientX - rect.left);
+            const y = Math.round(touch.clientY - rect.top);
+            mouseCoords.textContent = `${x}, ${y}`;
+        });
+        
+        this.canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            setTimeout(() => {
+                mouseCoords.textContent = '--, --';
+                mouseCoords.style.color = '#808080';
+            }, 1000);
+        });
+        
+        // Prevent zoom on double tap for buttons
+        document.querySelectorAll('button, .example-btn').forEach(button => {
+            button.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                button.click();
+            });
+        });
+        
+        // Handle mobile keyboard
+        this.setupMobileKeyboard();
+        
+        // Handle orientation changes
+        this.setupOrientationHandling();
+    }
+    
+    setupMobileKeyboard() {
+        const commandInput = this.commandInput;
+        
+        // Prevent zoom on focus for iOS
+        commandInput.addEventListener('focus', () => {
+            if (this.isMobile()) {
+                // Scroll input into view on mobile
+                setTimeout(() => {
+                    commandInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            }
+        });
+        
+        // Handle virtual keyboard
+        if (this.isMobile()) {
+            let initialViewportHeight = window.innerHeight;
+            
+            window.addEventListener('resize', () => {
+                const currentHeight = window.innerHeight;
+                const heightDifference = initialViewportHeight - currentHeight;
+                
+                // Keyboard is likely open if height decreased significantly
+                if (heightDifference > 150) {
+                    document.body.classList.add('keyboard-open');
+                } else {
+                    document.body.classList.remove('keyboard-open');
+                }
+            });
+        }
+    }
+    
+    setupOrientationHandling() {
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                this.updateTurtlePosition();
+                this.resizeCanvas();
+            }, 100);
+        });
+        
+        window.addEventListener('resize', () => {
+            this.resizeCanvas();
+        });
+    }
+    
+    resizeCanvas() {
+        if (this.isMobile()) {
+            const container = document.querySelector('.canvas-container');
+            const containerRect = container.getBoundingClientRect();
+            
+            // Adjust canvas size for mobile if needed
+            const maxWidth = containerRect.width - 20;
+            const maxHeight = containerRect.height - 20;
+            
+            if (this.canvas.width > maxWidth || this.canvas.height > maxHeight) {
+                const scale = Math.min(maxWidth / this.canvas.width, maxHeight / this.canvas.height);
+                this.canvas.style.transform = `scale(${scale})`;
+                this.canvas.style.transformOrigin = 'top left';
+            }
+        }
+    }
+    
+    isMobile() {
+        return window.innerWidth <= 768 || 'ontouchstart' in window;
     }
     
     executeCommand(command) {
@@ -304,11 +430,27 @@ class LogoInterpreter {
     }
     
     home() {
-        this.x = 600;
-        this.y = 450;
+        this.x = this.canvas.width / 2;
+        this.y = this.canvas.height / 2;
         this.heading = 0;
         this.updateTurtlePosition();
         this.updateInfo();
+    }
+    
+    initializeCanvasSize() {
+        if (this.isMobile()) {
+            // Smaller canvas for mobile devices
+            const container = document.querySelector('.canvas-container');
+            const maxWidth = Math.min(window.innerWidth - 20, 800);
+            const maxHeight = Math.min(window.innerHeight * 0.5, 600);
+            
+            this.canvas.width = maxWidth;
+            this.canvas.height = maxHeight;
+        } else {
+            // Default desktop size
+            this.canvas.width = 1200;
+            this.canvas.height = 900;
+        }
     }
     
     clearScreen() {
@@ -498,8 +640,32 @@ class LogoInterpreter {
         const div = document.createElement('div');
         div.className = `command-line ${type}`;
         div.textContent = text;
+        
+        // Add timestamp for better history tracking
+        const timestamp = new Date().toLocaleTimeString();
+        div.setAttribute('data-timestamp', timestamp);
+        
         this.output.appendChild(div);
         this.output.scrollTop = this.output.scrollHeight;
+        
+        // Update download button state if there's content
+        this.updateDownloadHistoryButton();
+    }
+    
+    updateDownloadHistoryButton() {
+        const downloadHistoryBtn = document.getElementById('downloadHistoryBtn');
+        const hasHistory = this.history.length > 0;
+        const hasOutput = document.querySelectorAll('.command-line').length > 1; // More than welcome text
+        
+        if (hasHistory || hasOutput) {
+            downloadHistoryBtn.style.opacity = '1';
+            downloadHistoryBtn.disabled = false;
+            downloadHistoryBtn.title = `Download session history (${this.history.length} commands)`;
+        } else {
+            downloadHistoryBtn.style.opacity = '0.6';
+            downloadHistoryBtn.disabled = true;
+            downloadHistoryBtn.title = 'No history to download yet';
+        }
     }
     
     downloadImage() {

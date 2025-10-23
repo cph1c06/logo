@@ -10,6 +10,9 @@ body {
     color: #ffffff;
     height: 100vh;
     overflow: hidden;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .container {
@@ -36,6 +39,31 @@ body {
 .controls {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Mobile header adjustments */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 4px;
+        padding: 6px 8px;
+    }
+    
+    .header h1 {
+        font-size: 12px;
+        text-align: center;
+        margin: 0;
+    }
+    
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 2px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 2px 0;
+    }
 }
 
 .controls button {
@@ -46,6 +74,21 @@ body {
     font-family: 'Courier New', monospace;
     font-size: 12px;
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile button improvements */
+@media (max-width: 768px) {
+    .controls button {
+        padding: 6px 8px;
+        font-size: 9px;
+        min-height: 36px;
+        min-width: 60px;
+        touch-action: manipulation;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
 }
 
 .controls button:hover {
@@ -60,6 +103,14 @@ body {
     flex: 1;
     display: flex;
     background-color: #008080;
+    min-height: 0;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
 }
 
 .canvas-container {
@@ -69,6 +120,17 @@ body {
     margin: 8px;
     border: 2px inset #c0c0c0;
     overflow: auto;
+    min-height: 300px;
+}
+
+/* Mobile canvas adjustments */
+@media (max-width: 768px) {
+    .canvas-container {
+        margin: 4px;
+        min-height: 250px;
+        max-height: 50vh;
+        order: 1;
+    }
 }
 
 #canvas {
@@ -111,6 +173,29 @@ body {
     height: 100%;
 }
 
+/* Mobile responsive command panel */
+@media (max-width: 768px) {
+    .command-panel {
+        width: 100%;
+        height: auto;
+        min-height: 350px;
+        max-height: 55vh;
+        border-left: none;
+        border-top: 2px solid #808080;
+        order: 2;
+    }
+    
+    .output {
+        max-height: calc(55vh - 250px);
+        min-height: 150px;
+    }
+    
+    /* Hide sidebar ad on mobile */
+    .sidebar-ad {
+        display: none;
+    }
+}
+
 .command-input {
     padding: 8px;
     border-bottom: 1px solid #808080;
@@ -133,6 +218,21 @@ body {
     font-family: 'Courier New', monospace;
     font-size: 14px;
     background: transparent;
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
+/* Mobile input improvements */
+@media (max-width: 768px) {
+    #commandInput {
+        font-size: 16px; /* Prevents zoom on iOS */
+        min-height: 44px;
+        padding: 8px 4px;
+    }
+    
+    .command-input {
+        padding: 8px;
+    }
 }
 
 .output {
@@ -192,6 +292,56 @@ body {
     gap: 4px;
 }
 
+/* Mobile example buttons */
+@media (max-width: 768px) {
+    .examples-section {
+        max-height: 220px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .example-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .hidden-mobile {
+        display: none;
+    }
+    
+    .show-more-btn {
+        display: block !important;
+        width: 100%;
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #d0d0d0;
+        border: 1px outset #d0d0d0;
+        color: #000000;
+        font-family: 'Courier New', monospace;
+        font-size: 10px;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
+    
+    .show-more-btn:hover {
+        background-color: #e0e0e0;
+    }
+    
+    .show-more-btn:active {
+        border: 1px inset #d0d0d0;
+        background-color: #c0c0c0;
+    }
+    
+    .examples-expanded .hidden-mobile {
+        display: block;
+    }
+    
+    .examples-expanded .show-more-btn {
+        display: none !important;
+    }
+}
+
 .example-btn {
     background-color: #c0c0c0;
     border: 1px outset #c0c0c0;
@@ -201,6 +351,18 @@ body {
     font-size: 10px;
     cursor: pointer;
     text-align: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Mobile example button improvements */
+@media (max-width: 768px) {
+    .example-btn {
+        padding: 12px 8px;
+        font-size: 11px;
+        min-height: 44px;
+        touch-action: manipulation;
+    }
 }
 
 .example-btn:hover {
@@ -769,4 +931,325 @@ input:focus,
 .ad-container ins {
     min-height: 90px;
     display: block;
+}
+/* Mobile-
+specific enhancements */
+@media (max-width: 480px) {
+    .container {
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile browsers */
+    }
+    
+    .header h1 {
+        font-size: 12px;
+        line-height: 1.2;
+    }
+    
+    .controls {
+        gap: 2px;
+    }
+    
+    .controls button {
+        padding: 6px 8px;
+        font-size: 10px;
+        min-width: 60px;
+    }
+    
+    .canvas-container {
+        margin: 2px;
+        min-height: 200px;
+    }
+    
+    .command-panel {
+        min-height: 250px;
+        max-height: 45vh;
+    }
+    
+    .output {
+        font-size: 11px;
+        max-height: calc(45vh - 200px);
+    }
+    
+    .examples-section {
+        padding: 6px;
+    }
+    
+    .examples-section h3 {
+        font-size: 11px;
+    }
+    
+    .turtle-info, .mouse-info {
+        padding: 6px;
+        font-size: 10px;
+    }
+    
+    .turtle-info h4, .mouse-info h4 {
+        font-size: 10px;
+    }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+    .controls button:hover,
+    .example-btn:hover {
+        background-color: #c0c0c0; /* Remove hover effects on touch devices */
+    }
+    
+    .controls button:active,
+    .example-btn:active {
+        background-color: #a0a0a0;
+        transform: scale(0.95);
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .main-content {
+        flex-direction: row;
+    }
+    
+    .command-panel {
+        width: 250px;
+        height: 100%;
+        max-height: none;
+        border-left: 2px solid #808080;
+        border-top: none;
+        order: 2;
+    }
+    
+    .canvas-container {
+        order: 1;
+        max-height: none;
+    }
+}
+
+/* Canvas scaling for mobile */
+@media (max-width: 768px) {
+    #canvas {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* Modal mobile improvements */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        height: 90%;
+        margin: 5% auto;
+    }
+    
+    .modal-header h2 {
+        font-size: 14px;
+    }
+    
+    .modal-body {
+        font-size: 11px;
+        padding: 12px;
+    }
+}
+
+/* Footer mobile adjustments */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 12px 8px;
+        font-size: 10px;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .footer-section h3 {
+        font-size: 11px;
+    }
+}
+
+/* Accessibility improvements for mobile */
+@media (max-width: 768px) {
+    .skip-link {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    /* Larger touch targets */
+    button, .example-btn, input {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Better focus indicators on mobile */
+    button:focus, .example-btn:focus, input:focus {
+        outline: 3px solid #000080;
+        outline-offset: 2px;
+    }
+}
+
+/* Prevent horizontal scrolling on mobile */
+@media (max-width: 768px) {
+    body, html {
+        overflow-x: hidden;
+    }
+    
+    .container {
+        width: 100%;
+        max-width: 100vw;
+    }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+    .container {
+        height: 100vh;
+        height: -webkit-fill-available;
+    }
+    
+    @media (max-width: 768px) {
+        .canvas-container {
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .output {
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+}/* Mob
+ile keyboard handling */
+.keyboard-open .canvas-container {
+    display: none;
+}
+
+.keyboard-open .command-panel {
+    height: 100vh;
+    max-height: 100vh;
+}
+
+.keyboard-open .output {
+    max-height: 40vh;
+}
+
+/* Prevent body scroll when keyboard is open */
+.keyboard-open body {
+    position: fixed;
+    width: 100%;
+}
+
+/* Mobile canvas scaling */
+.canvas-container canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Touch feedback */
+@media (hover: none) {
+    .controls button:active,
+    .example-btn:active {
+        background-color: #a0a0a0;
+        transform: scale(0.95);
+        transition: all 0.1s ease;
+    }
+}
+
+/* Improve scrolling on mobile */
+@media (max-width: 768px) {
+    .output {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+    
+    .canvas-container {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* Mobile-specific turtle adjustments */
+@media (max-width: 768px) {
+    .turtle {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .turtle::before {
+        width: 18px;
+        height: 18px;
+    }
+}/* Enh
+anced mobile layout improvements */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 11px;
+        line-height: 1.2;
+    }
+    
+    .controls {
+        gap: 1px;
+        padding: 0;
+    }
+    
+    .controls button {
+        padding: 4px 6px;
+        font-size: 8px;
+        min-width: 50px;
+        min-height: 32px;
+    }
+    
+    .canvas-container {
+        margin: 2px;
+        min-height: 180px;
+        max-height: 45vh;
+    }
+    
+    .command-panel {
+        min-height: 300px;
+        max-height: 55vh;
+    }
+    
+    .output {
+        font-size: 11px;
+        max-height: calc(55vh - 220px);
+        min-height: 120px;
+    }
+    
+    .examples-section {
+        padding: 4px;
+        max-height: 180px;
+    }
+    
+    .examples-section h3 {
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+    
+    .examples-section p {
+        font-size: 9px;
+        margin: 2px 0 4px 0;
+    }
+    
+    .turtle-info, .mouse-info {
+        padding: 4px;
+        font-size: 9px;
+    }
+    
+    .turtle-info h4, .mouse-info h4 {
+        font-size: 9px;
+    }
+}
+
+/* Ensure buttons stay on same line on mobile */
+@media (max-width: 768px) {
+    .controls {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .controls::-webkit-scrollbar {
+        display: none;
+    }
 }
